@@ -1,11 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useState } from 'react';
-import { css } from '@emotion/react';
 import { Page } from './Page';
 import { PageTitle } from './PageTitle';
-import { QuestionList } from './QuestionList';
-import { getUnansweredQuestions, QuestionData } from './QuestionsData';
 import { PrimaryButton } from './styles';
+import { QuestionList } from './QuestionList';
+import { css } from '@emotion/react';
+import { getUnansweredQuestions, QuestionData } from './QuestionsData';
+import { useNavigate } from 'react-router';
 
 export const HomePage = (): React.ReactElement => {
   const [questions, setQuestions] = useState<QuestionData[]>([]);
@@ -18,8 +19,10 @@ export const HomePage = (): React.ReactElement => {
     })();
   }, []);
 
+  const navigate = useNavigate();
+
   const handleAskQuestionClick = () => {
-    console.log('TODO - move to the AskPage');
+    navigate('ask');
   };
 
   return (

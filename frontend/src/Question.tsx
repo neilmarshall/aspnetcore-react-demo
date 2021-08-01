@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
+
 import { QuestionData } from './QuestionsData';
 import { gray2, gray3 } from './styles';
 
@@ -9,7 +11,7 @@ interface Props {
   showContent?: boolean;
 }
 
-export const Question = ({data, showContent = false }: Props): React.ReactElement => (
+export const Question = ({ data, showContent = false }: Props): React.ReactElement => (
   <div
     css={css`
       padding: 10px 0px;
@@ -21,20 +23,28 @@ export const Question = ({data, showContent = false }: Props): React.ReactElemen
         font-size: 19px;
       `}
     >
-      {data.title}
+      <Link
+        css={css`
+          text-decoration: none;
+          color: ${gray2}
+        `}
+        to={`/questions/${data.questionId}`}
+      >
+        {data.title}
+      </Link>
     </div>
     {showContent && (
-    <div
-      css={css`
+      <div
+        css={css`
         padding-bottom: 10px;
         font-size: 15px;
         color: ${gray2};
       `}
-    >
-      {data.content.length > 50
-        ? `${data.content.substring(0, 50)}`
-        : data.content}
-    </div>
+      >
+        {data.content.length > 50
+          ? `${data.content.substring(0, 50)}`
+          : data.content}
+      </div>
     )}
     <div
       css={css`

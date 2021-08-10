@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Page } from './Page';
 import { PageTitle } from './PageTitle';
-import { PrimaryButton } from './styles';
+import { PrimaryButton } from './Styles';
 import { QuestionList } from './QuestionList';
 import { css } from '@emotion/react';
 import { getUnansweredQuestions, QuestionData } from './QuestionsData';

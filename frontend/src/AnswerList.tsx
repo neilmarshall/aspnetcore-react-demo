@@ -4,7 +4,7 @@ import { css } from '@emotion/react';
 
 import { Answer } from './Answer';
 import { AnswerData } from './QuestionsData';
-import { gray5 } from './styles';
+import { gray5 } from './Styles';
 
 interface Props {
   data: AnswerData[];

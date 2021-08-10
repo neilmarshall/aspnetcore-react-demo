@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
 
 import { QuestionData } from './QuestionsData';
-import { gray2, gray3 } from './styles';
+import { gray2, gray3 } from './Styles';
 
 interface Props {
   data: QuestionData;

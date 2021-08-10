@@ -1,14 +1,27 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { UserIcon } from './Icons';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { css } from '@emotion/react';
+import { useForm } from 'react-hook-form';
 
-import { fontFamily, fontSize, gray1, gray2, gray5 } from './styles';
+import { UserIcon } from './Icons';
+import { fontFamily, fontSize, gray1, gray2, gray5 } from './Styles';
+
+type FormData = {
+  search: string
+};
 
 const Header = (): React.ReactElement => {
-  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.currentTarget.value);
+  const navigate = useNavigate();
+
+  const { register, handleSubmit } = useForm<FormData>();
+
+  const [searchParams] = useSearchParams();
+
+  const criteria = searchParams.get('criteria') || '';
+
+  const submitForm = ({ search }: FormData) => {
+    navigate(`search?criteria=${search}`);
   };
 
   return (
@@ -33,11 +46,14 @@ const Header = (): React.ReactElement => {
       `}>
         Q & A
       </Link>
-      <input
-        type="text"
-        placeholder="Search..."
-        onChange={handleSearchInputChange}
-        css={css`
+      <form onSubmit={handleSubmit(submitForm)}>
+        <input
+          ref={register}
+          name="search"
+          type="text"
+          placeholder="Search..."
+          defaultValue={criteria}
+          css={css`
           box-sizing: border-box;
           font-family: ${fontFamily};
           font-size: ${fontSize};
@@ -52,7 +68,8 @@ const Header = (): React.ReactElement => {
             outline-color: ${gray5};
           }
         `}
-      />
+        />
+      </form>
       <Link
         to="signin"
         css={css`

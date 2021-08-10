@@ -9,7 +9,7 @@ import { NotFoundPage } from './NotFoundPage';
 import { QuestionPage } from './QuestionPage';
 import { SearchPage } from './SearchPage';
 import { SignInPage } from './SignInPage';
-import { fontFamily, fontSize, gray2 } from './styles';
+import { fontFamily, fontSize, gray2 } from './Styles';
 
 const AskPage = React.lazy(() => import('./AskPage'));
 

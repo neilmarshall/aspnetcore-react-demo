@@ -3,7 +3,7 @@ import React from 'react';
 import { css } from '@emotion/react';
 import { Question } from './Question';
 import { QuestionData } from './QuestionsData';
-import { accent2, gray5 } from './styles';
+import { accent2, gray5 } from './Styles';
 
 
 interface Props {

@@ -3,7 +3,7 @@ import React from 'react';
 import { css } from '@emotion/react';
 
 import { AnswerData } from './QuestionsData';
-import { gray3 } from './styles';
+import { gray3 } from './Styles';
 
 interface Props {
   data: AnswerData;

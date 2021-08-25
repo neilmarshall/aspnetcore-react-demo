@@ -3,10 +3,12 @@ import React, { Fragment, useEffect, useState } from "react";
 import { css } from "@emotion/react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
 
 import { AnswerList } from "./AnswerList";
+import { AppState, gettingQuestionAction, gotQuestionAction } from "./Store";
 import { Page } from "./Page";
-import { QuestionData, getQuestion, postAnswer } from "./QuestionsData";
+import { getQuestion, postAnswer } from "./QuestionsData";
 import { gray3, gray6, FieldSet, FieldContainer, FieldLabel, FieldTextArea, FormButtonContainer, PrimaryButton, FieldError, SubmissionSuccess } from "./Styles";
 
 type FormData = {
@@ -14,7 +16,9 @@ type FormData = {
 };
 
 export const QuestionPage: React.FC = () => {
-  const [question, setQuestion] = useState<QuestionData | null>(null);
+  const dispatch = useDispatch();
+
+  const question = useSelector((state: AppState) => state.questions.viewing);
   const [successfullySubmitted, setSuccessfullySubmitted] = useState(false);
 
   const { register, errors, handleSubmit, formState } = useForm<FormData>({
@@ -37,8 +41,9 @@ export const QuestionPage: React.FC = () => {
 
   useEffect(() => {
     const doGetQuestion = async (questionId: number) => {
+      dispatch(gettingQuestionAction());
       const foundQuestion = await getQuestion(questionId);
-      setQuestion(foundQuestion);
+      dispatch(gotQuestionAction(foundQuestion));
     };
 
     if (questionId) {

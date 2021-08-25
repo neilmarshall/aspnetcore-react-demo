@@ -2,22 +2,26 @@
 import React, { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 import { useSearchParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
+import { AppState, searchingQuestionsAction, searchedQuestionsAction } from "./Store";
 import { Page } from "./Page";
 import { QuestionList } from "./QuestionList";
-import { searchQuestions, QuestionData } from "./QuestionsData";
+import { searchQuestions } from "./QuestionsData";
 
 export const SearchPage: React.FC = () => {
+  const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
 
-  const [questions, setQuestions] = useState<QuestionData[]>([]);
+  const questions = useSelector((state: AppState) => state.questions.searched);
 
   const search = searchParams.get('criteria') || ''
 
   useEffect(() => {
     (async (criteria: string) => {
+      dispatch(searchingQuestionsAction());
       const foundResults = await searchQuestions(criteria);
-      setQuestions(foundResults);
+      dispatch(searchedQuestionsAction(foundResults));
     })(search);
   }, [search]);
 

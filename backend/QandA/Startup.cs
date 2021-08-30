@@ -22,6 +22,9 @@ namespace QandA
         {
             services.AddControllers();
 
+            services.AddMemoryCache();
+            services.AddSingleton<IQuestionCache, QuestionCache>();
+
             services.AddScoped<IDataRepository, DataRepository>();
 
             services.AddSwaggerGen(c =>

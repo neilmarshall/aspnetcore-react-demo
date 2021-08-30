@@ -1,19 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using QandA.Data.Models;
 
 namespace QandA.Data
 {
     public interface IDataRepository
     {
-        IEnumerable<QuestionGetManyResponse> GetQuestions();
-        IEnumerable<QuestionGetManyResponse> GetQuestionsBySearch(string search);
-        IEnumerable<QuestionGetManyResponse> GetUnansweredQuestions();
-        QuestionGetSingleResponse GetQuestion(int questionId);
-        bool QuestionExists(int questionId);
-        AnswerGetResponse GetAnswer(int answerId);
-        QuestionGetSingleResponse PostQuestion(QuestionPostFullRequest question);
-        QuestionGetSingleResponse PutQuestion(int questionId, QuestionPutRequest question);
-        void DeleteQuestion(int questionId);
-        AnswerGetResponse PostAnswer(AnswerPostFullRequest answer);
+        Task<IEnumerable<QuestionGetManyResponse>> GetQuestionsAsync();
+        Task<IEnumerable<QuestionGetManyResponse>> GetQuestionsWithAnswersAsync();
+        Task<IEnumerable<QuestionGetManyResponse>> GetQuestionsBySearchWithPagingAsync(string search, int pageNumber, int pageSize);
+        Task<IEnumerable<QuestionGetManyResponse>> GetQuestionsBySearchAsync(string search);
+        Task<IEnumerable<QuestionGetManyResponse>> GetUnansweredQuestionsAsync();
+        Task<QuestionGetSingleResponse> GetQuestionAsync(int questionId);
+        Task<bool> QuestionExistsAsync(int questionId);
+        Task<AnswerGetResponse> GetAnswerAsync(int answerId);
+        Task<QuestionGetSingleResponse> PostQuestionAsync(QuestionPostFullRequest question);
+        Task<QuestionGetSingleResponse> PutQuestionAsync(int questionId, QuestionPutRequest question);
+        Task DeleteQuestionAsync(int questionId);
+        Task<AnswerGetResponse> PostAnswerAsync(AnswerPostFullRequest answer);
     }
 }

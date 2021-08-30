@@ -71,24 +71,24 @@ namespace QandA.Data
         {
             using var connection = new SqlConnection(_connectionString);
 
-            return connection.Query<QuestionGetManyResponse>(@"EXEC dbo.GetUnanswered");
+            return connection.Query<QuestionGetManyResponse>(@"EXEC dbo.Question_GetUnanswered");
         }
 
-        public AnswerGetResponse PostAnswer(AnswerPostRequest answer)
+        public AnswerGetResponse PostAnswer(AnswerPostFullRequest answer)
         {
             using var connection = new SqlConnection(_connectionString);
 
             return connection.QueryFirst<AnswerGetResponse>(
-                @"EXEC dbo.Answer_Post @QuestionId @Content @UserId @UserName @Created",
+                @"EXEC dbo.Answer_Post @QuestionId, @Content, @UserId, @UserName, @Created",
                 answer);
         }
 
-        public QuestionGetSingleResponse PostQuestion(QuestionPostRequest question)
+        public QuestionGetSingleResponse PostQuestion(QuestionPostFullRequest question)
         {
             using var connection = new SqlConnection(_connectionString);
 
             var questionId = connection.QueryFirst<int>(
-                @"EXEC dbo.Question_Post @Title @Content @UserId @UserName @Created",
+                @"EXEC dbo.Question_Post @Title, @Content, @UserId, @UserName, @Created",
                 question);
 
             return GetQuestion(questionId);
@@ -99,7 +99,7 @@ namespace QandA.Data
             using var connection = new SqlConnection(_connectionString);
 
             connection.Execute(
-                @"EXEC dbo.Question_Put @QuestionId @Title @Content",
+                @"EXEC dbo.Question_Put @QuestionId, @Title, @Content",
                 new { questionId, question.Title, question.Content });
 
             return GetQuestion(questionId);

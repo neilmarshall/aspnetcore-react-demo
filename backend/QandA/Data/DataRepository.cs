@@ -43,7 +43,7 @@ namespace QandA.Data
                 @"EXEC dbo.Question_GetSingle @QuestionId; EXEC dbo.Answer_Get_ByQuestionId @QuestionId;",
                 new { questionId });
 
-            var question = await results.ReadFirstAsync<QuestionGetSingleResponse>();
+            var question = await results.ReadFirstOrDefaultAsync<QuestionGetSingleResponse>();
 
             if (question != null)
             {

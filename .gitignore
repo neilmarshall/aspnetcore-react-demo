@@ -388,7 +388,8 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Database login creation script
-**/sqlscripts/00-Login.sql
+**/Scripts/Script-000-Login.sql
 
 # VSCode settings
 backend/.vscode/
+frontend/src/AppSettings.ts

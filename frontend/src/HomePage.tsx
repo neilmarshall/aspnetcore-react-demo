@@ -10,6 +10,7 @@ import { PrimaryButton } from './Styles';
 import { QuestionList } from './QuestionList';
 import { getUnansweredQuestions } from './QuestionsData';
 import { gettingUnansweredQuestionsAction, gotUnansweredQuestionsAction, AppState } from './Store';
+import { useAuth } from './Auth';
 
 export const HomePage = (): React.ReactElement => {
   const dispatch = useDispatch();
@@ -31,6 +32,8 @@ export const HomePage = (): React.ReactElement => {
     navigate('ask');
   };
 
+  const { isAuthenticated } = useAuth();
+
   return (
     <Page>
       <div
@@ -41,16 +44,18 @@ export const HomePage = (): React.ReactElement => {
         `}
       >
         <PageTitle>Unanswered Questions</PageTitle>
-        <PrimaryButton
-          onClick={handleAskQuestionClick}
-        >
-          Ask a question
-        </PrimaryButton>
+        {isAuthenticated && (
+          <PrimaryButton
+            onClick={handleAskQuestionClick}
+          >
+            Ask a question
+          </PrimaryButton>
+        )}
       </div>
       {questionsLoading
         ? <div>Loading...</div>
         : (<QuestionList data={questions} />
-      )}
+        )}
     </Page>
   );
 }

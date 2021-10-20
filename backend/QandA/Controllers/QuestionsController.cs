@@ -154,7 +154,7 @@ namespace QandA.Controllers
             if (!questionExists)
                 return NotFound();
 
-            return await _dataRepository.PostAnswerAsync(new AnswerPostFullRequest
+            var response = await _dataRepository.PostAnswerAsync(new AnswerPostFullRequest
             {
                 QuestionId = answerPostRequest.QuestionId.Value,
                 Content = answerPostRequest.Content,
@@ -162,6 +162,10 @@ namespace QandA.Controllers
                 UserName = await GetUserName(),
                 Created = DateTime.UtcNow
             });
+
+            _cache.Remove(answerPostRequest.QuestionId.Value);
+
+            return response;
         }
 
         private async Task<string> GetUserName()

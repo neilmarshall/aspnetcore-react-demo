@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import { UserIcon } from './Icons';
 import { fontFamily, fontSize, gray1, gray2, gray5 } from './Styles';
+import { useAuth } from "./Auth";
 
 type FormData = {
   search: string
@@ -23,6 +24,8 @@ const Header = (): React.ReactElement => {
   const submitForm = ({ search }: FormData) => {
     navigate(`search?criteria=${search}`);
   };
+
+  const { isAuthenticated, user, loading } = useAuth();
 
   return (
     <div css={css`
@@ -70,9 +73,13 @@ const Header = (): React.ReactElement => {
         `}
         />
       </form>
-      <Link
-        to="signin"
-        css={css`
+      {!loading && (isAuthenticated ? (
+        <div>
+          {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+          <span>{user!.name}</span>
+          <Link
+            to="signout"
+            css={css`
           font-family: ${fontFamily};
           font-size: ${fontSize};
           padding: 5px 10px;
@@ -87,10 +94,34 @@ const Header = (): React.ReactElement => {
             margin-left: 7px;
           }
         `}
-      >
-        <UserIcon />
-        <span>Sign In</span>
-      </Link>
+          >
+            <UserIcon />
+            <span>Sign Out</span>
+          </Link>
+        </div>
+      ) : (
+        <Link
+          to="signin"
+          css={css`
+          font-family: ${fontFamily};
+          font-size: ${fontSize};
+          padding: 5px 10px;
+          background-color: transparent;
+          color: ${gray2};
+          text-decoration: none;
+          cursor: pointer;
+          :focus {
+            outline-color: ${gray5};
+          }
+          span {
+            margin-left: 7px;
+          }
+        `}
+        >
+          <UserIcon />
+          <span>Sign In</span>
+        </Link>
+      ))}
     </div>
   );
 };

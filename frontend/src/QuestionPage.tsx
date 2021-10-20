@@ -10,6 +10,7 @@ import { AppState, gettingQuestionAction, gotQuestionAction } from "./Store";
 import { Page } from "./Page";
 import { getQuestion, postAnswer } from "./QuestionsData";
 import { gray3, gray6, FieldSet, FieldContainer, FieldLabel, FieldTextArea, FormButtonContainer, PrimaryButton, FieldError, SubmissionSuccess } from "./Styles";
+import { useAuth } from './Auth';
 
 type FormData = {
   content: string;
@@ -51,6 +52,8 @@ export const QuestionPage: React.FC = () => {
     }
   }, [questionId]);
 
+  const { isAuthenticated } = useAuth();
+
   return (
     <Page>
       <div
@@ -91,49 +94,51 @@ export const QuestionPage: React.FC = () => {
               {`Asked by ${question.userName} on ${question.created.toLocaleDateString()} ${question.created.toLocaleTimeString()}`}
             </div>
             <AnswerList data={question.answers} />
-            <form
-              onSubmit={handleSubmit(submitForm)}
-              css={css`
+            {isAuthenticated && (
+              <form
+                onSubmit={handleSubmit(submitForm)}
+                css={css`
                 margin-top: 20px;
               `}>
-              <FieldSet
-                disabled={formState.isSubmitting || successfullySubmitted}
-              >
-                <FieldContainer>
-                  <FieldLabel htmlFor="content">
-                    Your Answer
-                  </FieldLabel>
-                  <FieldTextArea
-                    id="content"
-                    name="content"
-                    ref={register({
-                      required: true,
-                      minLength: 50
-                    })}
-                  />
-                  {errors.content && errors.content.type === 'required' && (
-                    <FieldError>
-                      You must enter an answer
-                    </FieldError>
+                <FieldSet
+                  disabled={formState.isSubmitting || successfullySubmitted}
+                >
+                  <FieldContainer>
+                    <FieldLabel htmlFor="content">
+                      Your Answer
+                    </FieldLabel>
+                    <FieldTextArea
+                      id="content"
+                      name="content"
+                      ref={register({
+                        required: true,
+                        minLength: 50
+                      })}
+                    />
+                    {errors.content && errors.content.type === 'required' && (
+                      <FieldError>
+                        You must enter an answer
+                      </FieldError>
+                    )}
+                    {errors.content && errors.content.type === 'minLength' && (
+                      <FieldError>
+                        The answer must be at least 50 characters
+                      </FieldError>
+                    )}
+                  </FieldContainer>
+                  <FormButtonContainer>
+                    <PrimaryButton type="submit">
+                      Submit Your Answer
+                    </PrimaryButton>
+                  </FormButtonContainer>
+                  {successfullySubmitted && (
+                    <SubmissionSuccess>
+                      Your answer was successfully submitted
+                    </SubmissionSuccess>
                   )}
-                  {errors.content && errors.content.type === 'minLength' && (
-                    <FieldError>
-                      The answer must be at least 50 characters
-                    </FieldError>
-                  )}
-                </FieldContainer>
-                <FormButtonContainer>
-                  <PrimaryButton type="submit">
-                    Submit Your Answer
-                  </PrimaryButton>
-                </FormButtonContainer>
-                {successfullySubmitted && (
-                  <SubmissionSuccess>
-                    Your answer was successfully submitted
-                  </SubmissionSuccess>
-                )}
-              </FieldSet>
-            </form>
+                </FieldSet>
+              </form>
+            )}
           </Fragment>}
       </div>
     </Page>
